@@ -1,68 +1,60 @@
 import 'package:flutter/material.dart';
-import 'components/task.dart';
+import 'package:provider/provider.dart';
+import 'package:ajudante/widgets/TaskList.dart';
+import 'package:ajudante/pages/Todo.dart';
+import 'package:ajudante/pages/About.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => TaskList(),
+      child: const MainApp()
+    )
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MainApp extends StatefulWidget {
+  const MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  int currentPageIndex = 0;
+  final List<Widget> pages = <Widget>[
+    Todo(),
+    About(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'To-do list'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  List<Task> tasks = <Task>[];
-  int counter = 0;
-  Column tasksColumn = new Column();
-
-  void _addTask() {
-    setState(() {
-      tasks.add(new Task(title: 'Task$counter', description: 'Description$counter',));
-      tasksColumn = new Column(children: tasks,);
-      counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            tasksColumn,
+      theme: ThemeData.from(colorScheme: ColorScheme.dark()),
+      home: Scaffold(
+        appBar: AppBar(title: Text("Ajudante")),
+        body: pages[currentPageIndex],
+        bottomNavigationBar: NavigationBar(
+          onDestinationSelected: (int index) {
+            setState(() {
+              currentPageIndex = index;
+            });
+          },
+          selectedIndex: currentPageIndex,
+          destinations: [
+            NavigationDestination(
+              selectedIcon: Icon(Icons.add_task_outlined),
+              icon: Icon(Icons.add_task),
+              label: 'Todo'
+            ),
+            NavigationDestination(
+              selectedIcon: Icon(Icons.info_outlined),
+              icon: Icon(Icons.info),
+              label: 'Sobre'
+            ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _addTask,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      )
     );
   }
 }
