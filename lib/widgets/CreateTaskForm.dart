@@ -1,11 +1,10 @@
 import 'package:ajudante/widgets/Task.dart';
 import 'package:ajudante/widgets/TaskList.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class HasDeadlineCheckbox extends StatefulWidget {
-  HasDeadlineCheckboxState state = HasDeadlineCheckboxState();
+  final HasDeadlineCheckboxState state = HasDeadlineCheckboxState();
 
   HasDeadlineCheckbox({super.key});
   bool get isChecked => state.isChecked;

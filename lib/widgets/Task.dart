@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 
 class Task extends StatelessWidget {
   late int id;
-  late String title;
-  late String description;
+  final String title;
+  final String description;
 
   Task({super.key, required this.title, required this.description}) {
     this.id = DateTime.now().millisecond;

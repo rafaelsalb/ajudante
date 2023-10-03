@@ -8,9 +8,6 @@ class TaskList extends ChangeNotifier {
 
   void addTask(Task task) {
     _items.add(task);
-    for (var task in _items) {
-      print(task.title);
-    }
     notifyListeners();
   }
 
