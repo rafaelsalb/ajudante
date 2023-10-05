@@ -16,22 +16,25 @@ class ContactsPageState extends State<ContactsPage> {
     List<Contact> contacts =
         Provider.of<ContactList>(context, listen: true).contacts;
 
-    return Column(
-      children: [
-        Expanded(
-          child: SizedBox(
-            child: ListView.builder(
-              itemCount: contacts.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 2.0),
-                  child: contacts[index],
-                );
-              },
+    return Scaffold(
+      appBar: AppBar(title: Text("Contatos")),
+      body: Column(
+        children: [
+          Expanded(
+            child: SizedBox(
+              child: ListView.builder(
+                itemCount: contacts.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 2.0),
+                    child: contacts[index],
+                  );
+                },
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

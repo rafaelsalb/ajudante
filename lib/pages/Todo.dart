@@ -17,26 +17,45 @@ class _TodoState extends State<Todo> {
   Widget build(BuildContext context) {
     List<Task> tasks = Provider.of<TaskList>(context, listen: true).items;
 
-    return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CreateTaskForm(),
-            ),
-            Expanded(
-              child: SizedBox(
-                child: ListView.builder(
+    return Scaffold(
+      body: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: CreateTaskForm(),
+          ),
+          Expanded(
+            child: SizedBox(
+              child: ListView.builder(
                   itemCount: tasks.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 2.0),
                       child: tasks[index],
                     );
-                  }
-                ),
-              ),
+                  }),
             ),
-          ],
-        );
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => showDialog(
+            context: context,
+            builder: (context) {
+              return Stack(
+                children: [
+                  CreateTaskForm(),
+                  Positioned(
+                    right: 40,
+                    bottom: 40,
+                    child: ElevatedButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Icon(Icons.close)),
+                  )
+                ],
+              );
+            }),
+      ),
+    );
   }
 }

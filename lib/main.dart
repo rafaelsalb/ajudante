@@ -25,7 +25,7 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  int currentPageIndex = 0;
+  int currentPageIndex = 1;
   final List<Widget> pages = <Widget>[
     Todo(),
     ContactsPage(),
@@ -37,7 +37,6 @@ class _MainAppState extends State<MainApp> {
     return MaterialApp(
         theme: ThemeData.from(colorScheme: const ColorScheme.dark()),
         home: Scaffold(
-          appBar: AppBar(title: const Text("Ajudante")),
           body: pages[currentPageIndex],
           bottomNavigationBar: NavigationBar(
             onDestinationSelected: (int index) {

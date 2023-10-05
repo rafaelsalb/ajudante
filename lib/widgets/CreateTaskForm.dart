@@ -13,7 +13,6 @@ class HasDeadlineCheckbox extends StatefulWidget {
   State<StatefulWidget> createState() {
     return state;
   }
-
 }
 
 class HasDeadlineCheckboxState extends State<HasDeadlineCheckbox> {
@@ -30,7 +29,6 @@ class HasDeadlineCheckboxState extends State<HasDeadlineCheckbox> {
       },
     );
   }
-
 }
 
 class CreateTaskForm extends StatefulWidget {
@@ -40,10 +38,7 @@ class CreateTaskForm extends StatefulWidget {
   State<StatefulWidget> createState() {
     return CreateTaskFormState();
   }
-
 }
-
-
 
 class CreateTaskFormState extends State<CreateTaskForm> {
   final _formKey = GlobalKey<CreateTaskFormState>();
@@ -68,7 +63,7 @@ class CreateTaskFormState extends State<CreateTaskForm> {
               controller: titleController,
               validator: (value) {
                 if (value == null) {
-                  return('Enter text');
+                  return ('Enter text');
                 }
                 return null;
               },
@@ -78,7 +73,7 @@ class CreateTaskFormState extends State<CreateTaskForm> {
               controller: descriptionController,
               validator: (value) {
                 if (value == null) {
-                  return('Enter text');
+                  return ('Enter text');
                 }
                 return null;
               },
@@ -88,7 +83,7 @@ class CreateTaskFormState extends State<CreateTaskForm> {
             //   children: [
             //     hasDeadlineCheckbox,
             //     const Text('Definir prazo?'),
-            //     if (hasDeadlineCheckbox.isChecked) 
+            //     if (hasDeadlineCheckbox.isChecked)
             //       DatePickerDialog(initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime.now()),
             //   ],
             // ),
@@ -96,18 +91,21 @@ class CreateTaskFormState extends State<CreateTaskForm> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
-                  onPressed: () => {
-                    titleController.text = "",
-                    descriptionController.text = "",
-                  },
-                  child: const Icon(Icons.clear)),
+                    onPressed: () => {
+                          titleController.text = "",
+                          descriptionController.text = "",
+                        },
+                    child: const Icon(Icons.clear)),
                 ElevatedButton(
-                  onPressed: () => {
-                    Provider.of<TaskList>(context, listen: false).addTask(Task(title: titleController.text, description: descriptionController.text)),
-                    titleController.text = "",
-                    descriptionController.text = "",
-                  },
-                  child: const Icon(Icons.add)),
+                    onPressed: () => {
+                          Provider.of<TaskList>(context, listen: false).addTask(
+                              Task(
+                                  title: titleController.text,
+                                  description: descriptionController.text)),
+                          titleController.text = "",
+                          descriptionController.text = "",
+                        },
+                    child: const Icon(Icons.add)),
               ],
             ),
           ],
@@ -115,5 +113,4 @@ class CreateTaskFormState extends State<CreateTaskForm> {
       ),
     );
   }
-
 }
