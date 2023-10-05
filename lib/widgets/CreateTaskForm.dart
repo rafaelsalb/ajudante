@@ -55,60 +55,64 @@ class CreateTaskFormState extends State<CreateTaskForm> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            TextFormField(
-              controller: titleController,
-              validator: (value) {
-                if (value == null) {
-                  return ('Enter text');
-                }
-                return null;
-              },
-              decoration: const InputDecoration(labelText: 'Título'),
-            ),
-            TextFormField(
-              controller: descriptionController,
-              validator: (value) {
-                if (value == null) {
-                  return ('Enter text');
-                }
-                return null;
-              },
-              decoration: const InputDecoration(labelText: 'Descrição'),
-            ),
-            // Row(
-            //   children: [
-            //     hasDeadlineCheckbox,
-            //     const Text('Definir prazo?'),
-            //     if (hasDeadlineCheckbox.isChecked)
-            //       DatePickerDialog(initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime.now()),
-            //   ],
-            // ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: titleController,
+                validator: (value) {
+                  if (value == null || value == "") {
+                    return ('Enter text');
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(labelText: 'Título'),
+              ),
+              TextFormField(
+                controller: descriptionController,
+                validator: (value) {
+                  if (value == null || value == "") {
+                    return ('Enter text');
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(labelText: 'Descrição'),
+              ),
+              // Row(
+              //   children: [
+              //     hasDeadlineCheckbox,
+              //     const Text('Definir prazo?'),
+              //     if (hasDeadlineCheckbox.isChecked)
+              //       DatePickerDialog(initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime.now()),
+              //   ],
+              // ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
                     onPressed: () => {
-                          titleController.text = "",
-                          descriptionController.text = "",
-                        },
+                      titleController.text = "",
+                      descriptionController.text = "",
+                    },
                     child: const Icon(Icons.clear)),
-                ElevatedButton(
+                  ElevatedButton(
                     onPressed: () => {
-                          Provider.of<TaskList>(context, listen: false).addTask(
-                              Task(
-                                  title: titleController.text,
-                                  description: descriptionController.text)),
-                          titleController.text = "",
-                          descriptionController.text = "",
-                        },
+                      Provider.of<TaskList>(context, listen: false).addTask(
+                        Task(
+                          title: titleController.text,
+                          description: descriptionController.text)),
+                      titleController.text = "",
+                      descriptionController.text = "",
+                      Navigator.of(context).pop(),
+                    },
                     child: const Icon(Icons.add)),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

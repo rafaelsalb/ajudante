@@ -27,7 +27,7 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   int currentPageIndex = 1;
   final List<Widget> pages = <Widget>[
-    Todo(),
+    TodoPage(),
     ContactsPage(),
     const About(),
   ];
