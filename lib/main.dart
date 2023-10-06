@@ -1,4 +1,5 @@
 import 'package:ajudante/widgets/ContactList.dart';
+import 'package:ajudante/widgets/color_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ajudante/widgets/TaskList.dart';
@@ -14,6 +15,9 @@ void main() {
     ChangeNotifierProvider<ContactList>(
       create: (context) => ContactList(),
     ),
+    ChangeNotifierProvider<ColorMode>(
+      create: (context) => ColorMode(),
+    ),
   ], child: const MainApp()));
 }
 
@@ -25,17 +29,19 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  int currentPageIndex = 1;
+  int currentPageIndex = 0;
   final List<Widget> pages = <Widget>[
-    TodoPage(),
-    ContactsPage(),
+    const TodoPage(),
+    const ContactsPage(),
     const About(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: ThemeData.from(colorScheme: const ColorScheme.dark()),
+        theme: ThemeData.from(
+            colorScheme:
+                Provider.of<ColorMode>(context, listen: true).colorScheme),
         home: Scaffold(
           body: pages[currentPageIndex],
           bottomNavigationBar: NavigationBar(

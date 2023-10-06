@@ -3,7 +3,6 @@ import 'package:ajudante/widgets/ContactList.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 class CreateContactForm extends StatefulWidget {
   const CreateContactForm({super.key});
 
@@ -21,9 +20,9 @@ class CreateContactFormState extends State<CreateContactForm> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
+    Color buttonsColor = Colors.deepPurple;
     return Material(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -72,35 +71,39 @@ class CreateContactFormState extends State<CreateContactForm> {
                 decoration: const InputDecoration(labelText: 'Endereço'),
               ),
               Container(
-                padding: EdgeInsets.only(top: 8.0),
+                padding: const EdgeInsets.only(top: 8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     FloatingActionButton.small(
-                      onPressed: () => {
-                        nameController.text = "",
-                        phoneController.text = "",
-                        emailController.text = "",
-                        addressController.text = "",
-                      },
-                      child: const Icon(Icons.clear)),
-                    SizedBox(width: 4.0,),
+                        backgroundColor: Colors.redAccent,
+                        onPressed: () => {
+                              nameController.text = "",
+                              phoneController.text = "",
+                              emailController.text = "",
+                              addressController.text = "",
+                            },
+                        child: const Icon(Icons.clear)),
+                    const SizedBox(
+                      width: 4.0,
+                    ),
                     FloatingActionButton.small(
-                      onPressed: () => {
-                        Provider.of<ContactList>(context, listen: false).addContact(
-                          Contact(
-                            name: nameController.text,
-                            phone: phoneController.text,
-                            email: emailController.text,
-                            address: addressController.text,
-                          )),
-                        nameController.text = "",
-                        phoneController.text = "",
-                        emailController.text = "",
-                        addressController.text = "",
-                        Navigator.of(context).pop(),
-                      },
-                      child: const Icon(Icons.add)),
+                        backgroundColor: Colors.greenAccent,
+                        onPressed: () => {
+                              Provider.of<ContactList>(context, listen: false)
+                                  .addContact(Contact(
+                                name: nameController.text,
+                                phone: phoneController.text,
+                                email: emailController.text,
+                                address: addressController.text,
+                              )),
+                              nameController.text = "",
+                              phoneController.text = "",
+                              emailController.text = "",
+                              addressController.text = "",
+                              Navigator.of(context).pop(),
+                            },
+                        child: const Icon(Icons.add)),
                   ],
                 ),
               ),

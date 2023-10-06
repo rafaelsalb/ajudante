@@ -89,27 +89,35 @@ class CreateTaskFormState extends State<CreateTaskForm> {
               //       DatePickerDialog(initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime.now()),
               //   ],
               // ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton(
-                    onPressed: () => {
-                      titleController.text = "",
-                      descriptionController.text = "",
-                    },
-                    child: const Icon(Icons.clear)),
-                  ElevatedButton(
-                    onPressed: () => {
-                      Provider.of<TaskList>(context, listen: false).addTask(
-                        Task(
-                          title: titleController.text,
-                          description: descriptionController.text)),
-                      titleController.text = "",
-                      descriptionController.text = "",
-                      Navigator.of(context).pop(),
-                    },
-                    child: const Icon(Icons.add)),
-                ],
+              Container(
+                padding: EdgeInsets.only(top: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    FloatingActionButton.small(
+                        backgroundColor: Colors.redAccent,
+                        onPressed: () => {
+                              titleController.text = "",
+                              descriptionController.text = "",
+                            },
+                        child: const Icon(Icons.clear)),
+                    const SizedBox(
+                      width: 4.0,
+                    ),
+                    FloatingActionButton.small(
+                        backgroundColor: Colors.greenAccent,
+                        onPressed: () => {
+                              Provider.of<TaskList>(context, listen: false)
+                                  .addTask(Task(
+                                      title: titleController.text,
+                                      description: descriptionController.text)),
+                              titleController.text = "",
+                              descriptionController.text = "",
+                              Navigator.of(context).pop(),
+                            },
+                        child: const Icon(Icons.add)),
+                  ],
+                ),
               ),
             ],
           ),

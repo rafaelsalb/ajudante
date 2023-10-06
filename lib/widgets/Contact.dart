@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 class Contact extends StatelessWidget {
-  late String name;
-  String? phone;
-  String? email;
-  String? address;
+  final String name;
+  final String? phone;
+  final String? email;
+  final String? address;
 
-  Contact(
+  const Contact(
       {super.key,
-      required String this.name,
-      String? this.phone,
-      String? email,
-      String? address});
+      required this.name,
+      this.phone,
+      String? this.email,
+      String? this.address});
 
   @override
   Widget build(BuildContext context) {
@@ -146,13 +146,12 @@ Text ContactInfoField(String fieldName) {
 
 class ContactInfoRow extends StatelessWidget {
   final String fieldName;
-  String? info;
+  final String? info;
 
-  ContactInfoRow({required String this.fieldName, String? this.info});
+  const ContactInfoRow({super.key, required this.fieldName, this.info});
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Row(
       children: [
         ContactInfoField("$fieldName: "),

@@ -5,6 +5,8 @@ import '../widgets/CreateTaskForm.dart';
 import '../widgets/Task.dart';
 
 class TodoPage extends StatefulWidget {
+  const TodoPage({super.key});
+
   String get title => "To do";
 
   @override
@@ -17,7 +19,7 @@ class _TodoPageState extends State<TodoPage> {
     List<Task> tasks = Provider.of<TaskList>(context, listen: true).items;
 
     return Scaffold(
-      appBar: AppBar(title: Text("Tarefas")),
+      appBar: AppBar(title: const Text("Tarefas")),
       body: Column(
         children: [
           Expanded(
@@ -42,20 +44,20 @@ class _TodoPageState extends State<TodoPage> {
           builder: (context) {
             return Stack(
               children: [
-                CreateTaskForm(),
+                const CreateTaskForm(),
                 Positioned(
                   right: 16,
                   bottom: 16,
                   child: FloatingActionButton(
                     backgroundColor: Colors.deepPurple,
                     onPressed: () => Navigator.of(context).pop(),
-                    child: Icon(Icons.close)),
+                    child: const Icon(Icons.close)),
                 )
               ],
             );
           },
         ),
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
