@@ -6,8 +6,10 @@ import 'package:ajudante/widgets/TaskList.dart';
 import 'package:ajudante/pages/About.dart';
 import 'package:ajudante/pages/Contacts.dart';
 import 'package:ajudante/pages/Todo.dart';
+import 'package:ajudante/database.dart';
 
 void main() {
+  AjudanteDatabase db = AjudanteDatabase();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<TaskList>(
       create: (context) => TaskList(),

@@ -1,3 +1,5 @@
+import 'package:ajudante/database.dart';
+import 'package:ajudante/models/TaskModel.dart';
 import 'package:ajudante/widgets/Task.dart';
 import 'package:ajudante/widgets/TaskList.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +56,9 @@ class CreateTaskFormState extends State<CreateTaskForm> {
 
   @override
   Widget build(BuildContext context) {
+    AjudanteDatabase db = Provider.of<AjudanteDatabase>(context, listen: true);
+
+    Task task;
     return Material(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -107,10 +112,15 @@ class CreateTaskFormState extends State<CreateTaskForm> {
                     FloatingActionButton.small(
                         backgroundColor: Colors.greenAccent,
                         onPressed: () => {
+                              task = Task(
+                                title: titleController.text,
+                                description: descriptionController.text,
+                              ),
                               Provider.of<TaskList>(context, listen: false)
-                                  .addTask(Task(
-                                      title: titleController.text,
-                                      description: descriptionController.text)),
+                                  .addTask(task),
+                              db.createTask(
+                                TaskModel.fromTask(task),
+                              ),
                               titleController.text = "",
                               descriptionController.text = "",
                               Navigator.of(context).pop(),

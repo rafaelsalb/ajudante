@@ -22,7 +22,6 @@ class CreateContactFormState extends State<CreateContactForm> {
 
   @override
   Widget build(BuildContext context) {
-    Color buttonsColor = Colors.deepPurple;
     return Material(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
