@@ -1,8 +1,8 @@
-import 'package:ajudante/widgets/TaskList.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../widgets/CreateTaskForm.dart';
 import '../widgets/Task.dart';
+import 'package:ajudante/database.dart';
 
 class TodoPage extends StatefulWidget {
   const TodoPage({super.key});
@@ -16,7 +16,10 @@ class TodoPage extends StatefulWidget {
 class _TodoPageState extends State<TodoPage> {
   @override
   Widget build(BuildContext context) {
-    List<Task> tasks = Provider.of<TaskList>(context, listen: true).items;
+    // List<Task> tasks = Provider.of<TaskList>(context, listen: true).items;
+    Provider.of<AjudanteDatabase>(context, listen: true).updateTasks();
+    List<Task> tasks =
+        Provider.of<AjudanteDatabase>(context, listen: true).tasks;
 
     return Scaffold(
       appBar: AppBar(title: const Text("Tarefas")),
@@ -37,7 +40,7 @@ class _TodoPageState extends State<TodoPage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(     
+      floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.deepPurple,
         onPressed: () => showDialog(
           context: context,
@@ -49,9 +52,9 @@ class _TodoPageState extends State<TodoPage> {
                   right: 16,
                   bottom: 16,
                   child: FloatingActionButton(
-                    backgroundColor: Colors.deepPurple,
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Icon(Icons.close)),
+                      backgroundColor: Colors.deepPurple,
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Icon(Icons.close)),
                 )
               ],
             );

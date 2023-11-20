@@ -4,11 +4,15 @@ import 'package:provider/provider.dart';
 
 class Task extends StatelessWidget {
   final int id = DateTime.now().millisecond;
-  final String title;
-  final String description;
+  late final String title;
+  late final String description;
   final int creation_datetime = DateTime.now().millisecondsSinceEpoch;
 
   Task({super.key, required this.title, required this.description});
+  Task.fromMap(Map<String, dynamic> map, {super.key}) {
+    title = map['title'];
+    description = map['description'];
+  }
 
   @override
   Widget build(BuildContext context) {

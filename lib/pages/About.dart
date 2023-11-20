@@ -10,23 +10,23 @@ class About extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Sobre")),
+        appBar: AppBar(title: const Text("Sobre")),
         body: Column(
           children: [
             Row(
               children: [
                 FloatingActionButton(
                   backgroundColor: Colors.yellow.shade500,
-                  child: Icon(Icons.light_mode),
+                  child: const Icon(Icons.light_mode),
                   onPressed: () {
                     Provider.of<ColorMode>(context, listen: false)
                         .switchColorScheme();
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 8.0,
                 ),
-                Text("Alternar modo claro/escuro",
+                const Text("Alternar modo claro/escuro",
                     style: TextStyle(fontSize: 16)),
               ],
             )

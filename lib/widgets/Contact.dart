@@ -10,8 +10,8 @@ class Contact extends StatelessWidget {
       {super.key,
       required this.name,
       this.phone,
-      String? this.email,
-      String? this.address});
+      this.email,
+      this.address});
 
   @override
   Widget build(BuildContext context) {

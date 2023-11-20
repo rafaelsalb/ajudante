@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:ajudante/widgets/Task.dart';
 
 class TaskModel {
@@ -19,7 +21,7 @@ class TaskModel {
     title = task.title;
     description = task.description;
     creation_datetime = task.creation_datetime;
-    due_datetime = due_datetime;
+    due_datetime = null;
   }
 
   Map<String, dynamic> toMap() {

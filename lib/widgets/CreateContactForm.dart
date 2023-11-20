@@ -1,3 +1,4 @@
+import 'package:ajudante/database.dart';
 import 'package:ajudante/widgets/Contact.dart';
 import 'package:ajudante/widgets/ContactList.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class CreateContactFormState extends State<CreateContactForm> {
 
   @override
   Widget build(BuildContext context) {
+    AjudanteDatabase db = AjudanteDatabase();
     return Material(
       child: Padding(
         padding: const EdgeInsets.all(8.0),

@@ -9,7 +9,6 @@ import 'package:ajudante/pages/Todo.dart';
 import 'package:ajudante/database.dart';
 
 void main() {
-  AjudanteDatabase db = AjudanteDatabase();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<TaskList>(
       create: (context) => TaskList(),
