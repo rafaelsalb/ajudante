@@ -1,30 +1,36 @@
+import 'package:ajudante/models/ContactModel.dart';
 import 'package:ajudante/models/TaskModel.dart';
+import 'package:ajudante/widgets/Contact.dart';
 import 'package:ajudante/widgets/Task.dart';
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'dart:async';
-import 'package:flutter/widgets.dart';
 
-class AjudanteDatabase {
-  late Database database;
-  late List<Task> _tasks;
+class AjudanteDatabase extends ChangeNotifier {
+  static late Database database;
 
-  List<Task> get tasks => _tasks;
-
-  AjudanteDatabase() {
-    database = start() as Database;
-    _tasks = <Task>[];
+  AjudanteDatabase._create(Database db) {
+    database = db;
+    notifyListeners();
   }
 
-  Future<Database> start() async {
-    return await openDatabase(
-      join(await getDatabasesPath(), 'database.db'),
-      onCreate: (db, version) {
-        return db.execute(
-            'CREATE TABLE tasks(id INTEGER PRIMARY KEY, title TEXT, description TEXT, creation_date INTEGER, due_date INTEGER)');
+  Future<void> createTables() async {
+
+  }
+
+  static Future<AjudanteDatabase> create() async {
+    var db = await openDatabase(
+      join(await getDatabasesPath(), 'db.db'),
+      onCreate: (db, version) async {
+        await db.execute(
+            'CREATE TABLE tasks(id TEXT, title TEXT, description TEXT, creation_datetime INTEGER)');
+        await db.execute(
+          'CREATE TABLE contacts(id TEXT, name TEXT, phone TEXT, email TEXT, address TEXT)');
       },
       version: 1,
     );
+    return AjudanteDatabase._create(db);
   }
 
   Future<void> createTask(TaskModel task) async {
@@ -33,15 +39,45 @@ class AjudanteDatabase {
       task.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    print(await database.query('tasks'));
+    notifyListeners();
   }
 
-  Future<List<Task>> getTasks() async {
+  Future<List<Task>> tasks() async {
     final List<Map<String, dynamic>> maps = await database.query('tasks');
     return List.generate(maps.length, (index) => Task.fromMap(maps[index]));
   }
 
-  void updateTasks() async {
-    final List<Map<String, dynamic>> maps = await database.query('tasks');
-    _tasks = List.generate(maps.length, (index) => Task.fromMap(maps[index]));
+  Future<void> deleteTask(String id) async {
+    await database.delete(
+      'tasks',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    notifyListeners();
+  }
+
+  Future<void> createContact(ContactModel contact) async {
+    await database.insert(
+      'contacts',
+      contact.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    print(await database.query('contacts'));
+    notifyListeners();
+  }
+
+  Future<List<Contact>> contacts() async {
+    final List<Map<String, dynamic>> maps = await database.query('contacts');
+    return List.generate(maps.length, (index) => Contact.fromMap(maps[index]));
+  }
+
+  Future<void> deleteContact(String id) async {
+    await database.delete(
+      'contacts',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    notifyListeners();
   }
 }

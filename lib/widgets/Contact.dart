@@ -1,17 +1,27 @@
+import 'package:ajudante/database.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Contact extends StatelessWidget {
-  final String name;
-  final String? phone;
-  final String? email;
-  final String? address;
+  late final String id;
+  late String name;
+  late String? phone;
+  late String? email;
+  late String? address;
 
-  const Contact(
+  Contact(
       {super.key,
       required this.name,
       this.phone,
       this.email,
       this.address});
+  Contact.fromMap(Map<String, dynamic> map, {super.key}) {
+    id = map['id'];
+    name = map['name'];
+    phone = map['phone'];
+    email = map['email'];
+    address = map['address'];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +36,8 @@ class Contact extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(
-                width: 128,
-                height: 128,
+                width: 64,
+                height: 64,
                 child: CircleAvatar(
                   child: Icon(Icons.question_mark),
                 ),
@@ -38,9 +48,9 @@ class Contact extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ContactName(name),
-                    ContactInfoRow(fieldName: "Telefone", info: phone),
-                    ContactInfoRow(fieldName: "E-mail", info: email),
-                    ContactInfoRow(fieldName: "Endereço", info: address),
+                    phone != "" ? ContactInfoRow(fieldName: "Telefone", info: phone) : const SizedBox.shrink(),
+                    email != "" ? ContactInfoRow(fieldName: "E-mail", info: email) : const SizedBox.shrink(),
+                    address != "" ? ContactInfoRow(fieldName: "Endereço", info: address) : const SizedBox.shrink(),
                   ],
                 ),
               ),
@@ -68,6 +78,7 @@ class Contact extends StatelessWidget {
                       color: Colors.white,
                       icon: const Icon(Icons.email),
                     ),
+                    ContactDeleteButton(info: id)
                   ],
                 ),
               )
@@ -110,6 +121,38 @@ class ContactActionButton extends StatelessWidget {
           if (info != null) {
             print("Contacting $info");
           }
+          if (action != null) {
+            action!();
+          }
+        },
+        icon: icon,
+      ),
+    );
+  }
+}
+
+class ContactDeleteButton extends StatelessWidget {
+  ContactDeleteButton({
+    super.key, required this.info});
+
+  final Color backgroundColor = Colors.red;
+  final Color borderColor = Colors.red.shade800;
+  final Color color = Colors.white;
+  final Icon icon = Icon(Icons.remove_circle);
+  final String info;
+
+  @override
+  Widget build(BuildContext context) {
+    AjudanteDatabase db = Provider.of<AjudanteDatabase>(context, listen: false);
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(width: 2.0, color: borderColor),
+          borderRadius: BorderRadius.circular(16.0),
+          color: backgroundColor),
+      child: IconButton.filled(
+        color: color,
+        onPressed: () {
+            db.deleteContact(info);
         },
         icon: icon,
       ),

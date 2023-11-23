@@ -1,21 +1,25 @@
-import 'package:ajudante/widgets/TaskList.dart';
+import 'package:ajudante/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Task extends StatelessWidget {
-  final int id = DateTime.now().millisecond;
+  late final String id;
   late final String title;
   late final String description;
-  final int creation_datetime = DateTime.now().millisecondsSinceEpoch;
+  late final int creation_datetime;
 
-  Task({super.key, required this.title, required this.description});
+  Task({super.key, required this.id, required this.title, required this.description});
   Task.fromMap(Map<String, dynamic> map, {super.key}) {
+    id = map['id'];
     title = map['title'];
     description = map['description'];
+    creation_datetime = map['creation_datetime'];
   }
+
 
   @override
   Widget build(BuildContext context) {
+    AjudanteDatabase db = Provider.of<AjudanteDatabase>(context, listen: false);
     return Container(
       alignment: AlignmentDirectional.centerStart,
       decoration: BoxDecoration(
@@ -31,8 +35,8 @@ class Task extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ElevatedButton(
-                  onPressed: () => Provider.of<TaskList>(context, listen: false)
-                      .removeFromID(id),
+                  onPressed: () => db
+                      .deleteTask(id),
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green.shade500),
                   child: const Icon(Icons.check_outlined)),
@@ -42,8 +46,8 @@ class Task extends StatelessWidget {
                       backgroundColor: Colors.blue.shade500),
                   child: const Icon(Icons.edit)),
               ElevatedButton(
-                  onPressed: () => Provider.of<TaskList>(context, listen: false)
-                      .removeFromID(id),
+                  onPressed: () => db
+                      .deleteTask(id),
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red.shade500),
                   child: const Icon(Icons.remove_circle_outline)),
@@ -56,7 +60,7 @@ class Task extends StatelessWidget {
 }
 
 class TaskComponent extends StatelessWidget {
-  const TaskComponent({
+  TaskComponent({
     super.key,
     required this.text,
   });

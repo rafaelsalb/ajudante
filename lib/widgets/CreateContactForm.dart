@@ -1,6 +1,5 @@
 import 'package:ajudante/database.dart';
-import 'package:ajudante/widgets/Contact.dart';
-import 'package:ajudante/widgets/ContactList.dart';
+import 'package:ajudante/models/ContactModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +22,7 @@ class CreateContactFormState extends State<CreateContactForm> {
 
   @override
   Widget build(BuildContext context) {
-    AjudanteDatabase db = AjudanteDatabase();
+    AjudanteDatabase db = Provider.of<AjudanteDatabase>(context, listen: false);
     return Material(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -91,13 +90,14 @@ class CreateContactFormState extends State<CreateContactForm> {
                     FloatingActionButton.small(
                         backgroundColor: Colors.greenAccent,
                         onPressed: () => {
-                              Provider.of<ContactList>(context, listen: false)
-                                  .addContact(Contact(
-                                name: nameController.text,
-                                phone: phoneController.text,
-                                email: emailController.text,
-                                address: addressController.text,
-                              )),
+                              db.createContact(
+                                ContactModel(
+                                  name: nameController.text,
+                                  phone: phoneController.text,
+                                  email: emailController.text,
+                                  address: addressController.text,
+                                ),
+                              ),
                               nameController.text = "",
                               phoneController.text = "",
                               emailController.text = "",

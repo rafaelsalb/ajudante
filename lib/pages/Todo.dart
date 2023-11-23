@@ -14,13 +14,34 @@ class TodoPage extends StatefulWidget {
 }
 
 class _TodoPageState extends State<TodoPage> {
+  List<Task> tasks = <Task>[];
+  var _context;
+
+  Future<void> updateTasks() async {
+    var _tasks = await Provider.of<AjudanteDatabase>(context, listen: false).tasks();
+    setState(() {
+      tasks = _tasks;
+      print('atualizando...');
+      print(tasks);
+    });
+  }
+
+  @override
+  void dispose() {
+    _context.removeListener(updateTasks);
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    updateTasks();
+    _context = context.read<AjudanteDatabase>();
+    _context.addListener(updateTasks);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // List<Task> tasks = Provider.of<TaskList>(context, listen: true).items;
-    Provider.of<AjudanteDatabase>(context, listen: true).updateTasks();
-    List<Task> tasks =
-        Provider.of<AjudanteDatabase>(context, listen: true).tasks;
-
     return Scaffold(
       appBar: AppBar(title: const Text("Tarefas")),
       body: Column(
@@ -42,24 +63,17 @@ class _TodoPageState extends State<TodoPage> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.deepPurple,
-        onPressed: () => showDialog(
-          context: context,
-          builder: (context) {
-            return Stack(
-              children: [
-                const CreateTaskForm(),
-                Positioned(
-                  right: 16,
-                  bottom: 16,
-                  child: FloatingActionButton(
-                      backgroundColor: Colors.deepPurple,
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Icon(Icons.close)),
-                )
-              ],
-            );
-          },
-        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const CreateTaskForm()),
+          ).then((_) {
+            print('a');
+            updateTasks();
+          });
+        },
+        // )
+        // },
         child: const Icon(Icons.add),
       ),
     );

@@ -1,7 +1,5 @@
 import 'package:ajudante/database.dart';
 import 'package:ajudante/models/TaskModel.dart';
-import 'package:ajudante/widgets/Task.dart';
-import 'package:ajudante/widgets/TaskList.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -56,9 +54,7 @@ class CreateTaskFormState extends State<CreateTaskForm> {
 
   @override
   Widget build(BuildContext context) {
-    AjudanteDatabase db = Provider.of<AjudanteDatabase>(context, listen: true);
-
-    Task task;
+    AjudanteDatabase db = Provider.of<AjudanteDatabase>(context, listen: false);
     return Material(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -100,6 +96,7 @@ class CreateTaskFormState extends State<CreateTaskForm> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     FloatingActionButton.small(
+                        heroTag: 'clear',
                         backgroundColor: Colors.redAccent,
                         onPressed: () => {
                               titleController.text = "",
@@ -110,20 +107,18 @@ class CreateTaskFormState extends State<CreateTaskForm> {
                       width: 4.0,
                     ),
                     FloatingActionButton.small(
+                        heroTag: 'create',
                         backgroundColor: Colors.greenAccent,
                         onPressed: () => {
-                              task = Task(
-                                title: titleController.text,
-                                description: descriptionController.text,
-                              ),
-                              Provider.of<TaskList>(context, listen: false)
-                                  .addTask(task),
-                              db.createTask(
-                                TaskModel.fromTask(task),
-                              ),
-                              titleController.text = "",
-                              descriptionController.text = "",
-                              Navigator.of(context).pop(),
+                                  db.createTask(
+                                    TaskModel(
+                                      title: titleController.text,
+                                      description: descriptionController.text,
+                                    ),
+                                  ),
+                                  titleController.text = "",
+                                  descriptionController.text = "",
+                                  Navigator.of(context).pop(),
                             },
                         child: const Icon(Icons.add)),
                   ],
