@@ -1,4 +1,5 @@
 import 'package:ajudante/database.dart';
+import 'package:ajudante/widgets/task_popupmenu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -7,15 +8,21 @@ class Task extends StatelessWidget {
   late final String title;
   late final String description;
   late final int creation_datetime;
+  int done = 0;
 
-  Task({super.key, required this.id, required this.title, required this.description});
+  Task({
+    super.key,
+    required this.id,
+    required this.title,
+    required this.description,
+  });
   Task.fromMap(Map<String, dynamic> map, {super.key}) {
     id = map['id'];
     title = map['title'];
     description = map['description'];
     creation_datetime = map['creation_datetime'];
+    done = map['done'];
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -23,36 +30,23 @@ class Task extends StatelessWidget {
     return Container(
       alignment: AlignmentDirectional.centerStart,
       decoration: BoxDecoration(
-        border: Border.all(width: 2.0, color: Theme.of(context).dividerColor),
+        border: Border.all(width: 2.0, color: done == 1 ? Colors.greenAccent : Theme.of(context).dividerColor),
         borderRadius: BorderRadius.circular(4.0),
       ),
       child: Column(
         children: [
-          TaskComponent(text: title),
+          TaskTitle(id: id, text: title),
           TaskComponent(text: description),
-          Container(
-              child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              ElevatedButton(
-                  onPressed: () => db
-                      .deleteTask(id),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green.shade500),
-                  child: const Icon(Icons.check_outlined)),
-              ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue.shade500),
-                  child: const Icon(Icons.edit)),
-              ElevatedButton(
-                  onPressed: () => db
-                      .deleteTask(id),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red.shade500),
-                  child: const Icon(Icons.remove_circle_outline)),
+            ElevatedButton(
+                onPressed: () => db.setTaskDone(id),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green.shade500),
+                child: const Icon(Icons.check_outlined)),
             ],
-          ))
+          )
         ],
       ),
     );
@@ -83,6 +77,43 @@ class TaskComponent extends StatelessWidget {
             child: Text(
               text,
               style: const TextStyle(),
+            ),
+          ),
+        ));
+  }
+}
+
+class TaskTitle extends StatelessWidget {
+  final String id;
+  final String text;
+
+  const TaskTitle({super.key, required this.id, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    print(id);
+    return Container(
+        decoration: BoxDecoration(
+            border: BorderDirectional(
+                bottom: BorderSide(
+          width: 2.0,
+          color: Theme.of(context).dividerColor,
+        ))),
+        child: SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Text(
+                    text,
+                    style: const TextStyle(),
+                  ),
+                ),
+                TaskPopupMenu(id: id,)
+              ],
             ),
           ),
         ));

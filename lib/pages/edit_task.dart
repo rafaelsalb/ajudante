@@ -1,60 +1,35 @@
 import 'package:ajudante/database.dart';
 import 'package:ajudante/models/TaskModel.dart';
+import 'package:ajudante/widgets/Task.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class HasDeadlineCheckbox extends StatefulWidget {
-  final HasDeadlineCheckboxState state = HasDeadlineCheckboxState();
-
-  HasDeadlineCheckbox({super.key});
-  bool get isChecked => state.isChecked;
-
-  @override
-  State<StatefulWidget> createState() {
-    return state;
-  }
-}
-
-class HasDeadlineCheckboxState extends State<HasDeadlineCheckbox> {
-  bool isChecked = false;
+class EditTaskForm extends StatefulWidget {
+  final String taskId;
+  
+  const EditTaskForm({super.key, required this.taskId});
 
   @override
-  Widget build(BuildContext context) {
-    return Checkbox(
-      value: isChecked,
-      onChanged: (bool? value) => {
-        setState(() {
-          isChecked = value!;
-        }),
-      },
-    );
-  }
+  State<EditTaskForm> createState() => _EditTaskFormState();
 }
 
-class CreateTaskForm extends StatefulWidget {
-  const CreateTaskForm({super.key});
-
-  @override
-  State<StatefulWidget> createState() {
-    return CreateTaskFormState();
-  }
-}
-
-class CreateTaskFormState extends State<CreateTaskForm> {
-  final _formKey = GlobalKey<CreateTaskFormState>();
-  bool hasDeadline = false;
-  late HasDeadlineCheckbox hasDeadlineCheckbox;
-
-  CreateTaskFormState() {
-    hasDeadlineCheckbox = HasDeadlineCheckbox();
-  }
+class _EditTaskFormState extends State<EditTaskForm> {
+  final _formKey = GlobalKey<_EditTaskFormState>();
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+  
+  Future<void> getData(AjudanteDatabase db) async {
+    List<Task> tasks = await db.tasks();
+    Task task = tasks.firstWhere((element) => element.id == widget.taskId);
+    titleController.text = task.title;
+    descriptionController.text = task.description;
+  }
 
   @override
   Widget build(BuildContext context) {
     AjudanteDatabase db = Provider.of<AjudanteDatabase>(context, listen: false);
+    getData(db);
     return Material(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -110,16 +85,14 @@ class CreateTaskFormState extends State<CreateTaskForm> {
                         heroTag: 'create',
                         backgroundColor: Colors.greenAccent,
                         onPressed: () => {
-                                  db.createTask(
-                                    TaskModel(
-                                      title: titleController.text,
-                                      description: descriptionController.text,
-                                      
-                                    ),
-                                  ),
-                                  titleController.text = "",
-                                  descriptionController.text = "",
-                                  Navigator.of(context).pop(),
+                              db.updateTask(
+                                 widget.taskId,
+                                 titleController.text,
+                                 descriptionController.text 
+                              ),
+                              titleController.text = "",
+                              descriptionController.text = "",
+                              Navigator.of(context).pop(),
                             },
                         child: const Icon(Icons.add)),
                   ],

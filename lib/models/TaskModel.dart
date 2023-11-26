@@ -9,6 +9,7 @@ class TaskModel {
   late String description;
   late int creation_datetime = DateTime.now().millisecondsSinceEpoch;
   late int? due_datetime;
+  late int done = 0;
 
   TaskModel(
       {required this.title,
@@ -20,6 +21,7 @@ class TaskModel {
     description = task.description;
     creation_datetime = task.creation_datetime;
     due_datetime = null;
+    done = task.done;
   }
 
   Map<String, dynamic> toMap() {
@@ -29,6 +31,7 @@ class TaskModel {
       'description': description,
       'creation_datetime': creation_datetime,
       // 'due_datetime': due_datetime,
+      'done': done,
     };
   }
 
