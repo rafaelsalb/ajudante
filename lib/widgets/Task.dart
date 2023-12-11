@@ -30,23 +30,30 @@ class Task extends StatelessWidget {
     return Container(
       alignment: AlignmentDirectional.centerStart,
       decoration: BoxDecoration(
-        border: Border.all(width: 2.0, color: done == 1 ? Colors.greenAccent : Theme.of(context).dividerColor),
+        border: Border.all(
+            width: 2.0,
+            color: done == 1
+                ? Colors.greenAccent
+                : Theme.of(context).dividerColor),
         borderRadius: BorderRadius.circular(4.0),
       ),
       child: Column(
         children: [
           TaskTitle(id: id, text: title),
           TaskComponent(text: description),
+          done == 0 ?
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-            ElevatedButton(
-                onPressed: () => db.setTaskDone(id),
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green.shade500),
-                child: const Icon(Icons.check_outlined)),
+              ElevatedButton(
+                  onPressed: () => db.setTaskDone(id),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green.shade500,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Icon(Icons.check_outlined)),
             ],
-          )
+          ) : const SizedBox.shrink(),
         ],
       ),
     );
@@ -112,7 +119,9 @@ class TaskTitle extends StatelessWidget {
                     style: const TextStyle(),
                   ),
                 ),
-                TaskPopupMenu(id: id,)
+                TaskPopupMenu(
+                  id: id,
+                )
               ],
             ),
           ),

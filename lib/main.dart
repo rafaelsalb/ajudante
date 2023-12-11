@@ -5,23 +5,21 @@ import 'package:ajudante/pages/About.dart';
 import 'package:ajudante/pages/Contacts.dart';
 import 'package:ajudante/pages/Todo.dart';
 import 'package:ajudante/database.dart';
+import 'package:ajudante/widgets/TodoFilter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   var db = await AjudanteDatabase.create();
 
   runApp(MultiProvider(providers: [
-    // ChangeNotifierProvider<TaskList>(
-    //   create: (context) => TaskList(),
-    // ),
-    // ChangeNotifierProvider<ContactList>(
-    //   create: (context) => ContactList(),
-    // ),
     ChangeNotifierProvider<ColorMode>(
       create: (context) => ColorMode(),
     ),
     ChangeNotifierProvider<AjudanteDatabase>(
       create: (context) => db,
+    ),
+    ChangeNotifierProvider<TodoFilter>(
+      create: (context) => TodoFilter(),
     )
   ], child: MainApp()));
 }

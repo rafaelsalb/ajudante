@@ -15,10 +15,6 @@ class AjudanteDatabase extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> createTables() async {
-
-  }
-
   static Future<AjudanteDatabase> create() async {
     var db = await openDatabase(
       join(await getDatabasesPath(), 'ajudantebeta0001.db'),
@@ -39,12 +35,22 @@ class AjudanteDatabase extends ChangeNotifier {
       task.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    print(await database.query('tasks'));
     notifyListeners();
   }
 
   Future<List<Task>> tasks() async {
     final List<Map<String, dynamic>> maps = await database.query('tasks');
+    return List.generate(maps.length, (index) => Task.fromMap(maps[index]));
+  }
+
+  Future<List<Task>> doneTasks() async {
+    final List<Map<String, dynamic>> maps = await database.query('tasks', where: 'done = 1');
+    return List.generate(maps.length, (index) => Task.fromMap(maps[index]));
+  }
+
+  Future<List<Task>> undoneTasks() async {
+    final List<Map<String, dynamic>> maps =
+        await database.query('tasks', where: 'done = 0');
     return List.generate(maps.length, (index) => Task.fromMap(maps[index]));
   }
 
@@ -77,7 +83,6 @@ class AjudanteDatabase extends ChangeNotifier {
       contact.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    print(await database.query('contacts'));
     notifyListeners();
   }
 
