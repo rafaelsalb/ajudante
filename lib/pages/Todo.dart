@@ -73,21 +73,21 @@ class _TodoPageState extends State<TodoPage> {
         title: const Text("Tarefas"),
         actions: [
           ActionChip(
-            label: Icon(Icons.done_all),
+            label: const Icon(Icons.done_all),
             color: MaterialStatePropertyAll(
               only_done
                   ? isDarkMode
-                      ? Colors.black
-                      : Colors.white
+                      ? Colors.grey.shade700
+                      : Colors.grey.shade300
                   : isDarkMode
-                      ? Colors.grey.shade800
-                      : Colors.grey.shade300,
+                      ? Colors.grey.shade900
+                      : Colors.white
             ),
             onPressed: switchOnlyDone,
           ),
         ],
       ),
-      body: views[only_done ? 1 : 0],
+      body: views[only_done ? 0 : 1],
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.deepPurple,
         onPressed: () {

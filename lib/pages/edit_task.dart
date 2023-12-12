@@ -94,7 +94,7 @@ class _EditTaskFormState extends State<EditTaskForm> {
                               descriptionController.text = "",
                               Navigator.of(context).pop(),
                             },
-                        child: const Icon(Icons.add)),
+                        child: const Icon(Icons.edit)),
                   ],
                 ),
               ),
